@@ -30,4 +30,15 @@ class ApiService {
       throw Exception('Failed to load album');
     }
   }
+
+  Future<void> deleteAlbum(int id) async {
+    final response = await http.delete(
+      Uri.parse('$baseUrl/albums/$id'),
+    );
+
+    if (response.statusCode != 200 &&
+        response.statusCode != 204) {
+      throw Exception('Failed to delete album');
+    }
+  }
 }

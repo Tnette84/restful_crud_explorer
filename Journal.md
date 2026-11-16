@@ -18,3 +18,7 @@ I created an Album model and an API service using the HTTP package. I used Futur
 ## Phase 2 - Album Details and Navigation
 
 I added a method to retrieve an individual album from the REST API. I created an album details screen and implemented navigation using Navigator.push. I successfully tested viewing album details and returning to the album list in Chrome.
+
+## Phase 3 - Delete Albums
+
+I implemented the HTTP DELETE method and added a delete button with a confirmation dialog. I successfully tested both canceling and deleting an album. The application updates the list and displays a success message. JSONPlaceholder simulates deletion without permanently removing the data from the server.

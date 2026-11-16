@@ -30,11 +30,58 @@ class AlbumListScreen extends StatefulWidget {
 class _AlbumListScreenState
     extends State<AlbumListScreen> {
   late Future<List<Album>> albums;
+  final Set<int> deletedIds = {};
 
   @override
   void initState() {
     super.initState();
     albums = ApiService().fetchAlbums();
+  }
+
+  Future<void> deleteAlbum(Album album) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Album'),
+        content: const Text(
+          'Are you sure you want to delete this album?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true || !mounted) return;
+
+    try {
+      await ApiService().deleteAlbum(album.id);
+
+      if (!mounted) return;
+
+      setState(() {
+        deletedIds.add(album.id);
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Album deleted successfully'),
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    }
   }
 
   @override
@@ -59,28 +106,36 @@ class _AlbumListScreenState
             );
           }
 
-          final albumList = snapshot.data ?? [];
+          final albumList = (snapshot.data ?? [])
+              .where((album) => !deletedIds.contains(album.id))
+              .toList();
 
           return ListView.builder(
             itemCount: albumList.length,
             itemBuilder: (context, index) {
               final album = albumList[index];
 
-             return ListTile(
-  leading: const Icon(Icons.album),
-  title: Text(album.title),
-  subtitle: Text('Album ID: ${album.id}'),
-  trailing: const Icon(Icons.arrow_forward_ios),
-  onTap: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) =>
-            AlbumDetailScreen(albumId: album.id),
-      ),
-    );
-  },
-             );
+              return ListTile(
+                leading: const Icon(Icons.album),
+                title: Text(album.title),
+                subtitle: Text('Album ID: ${album.id}'),
+                trailing: IconButton(
+                  icon: const Icon(
+                    Icons.delete,
+                    color: Colors.red,
+                  ),
+                  onPressed: () => deleteAlbum(album),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          AlbumDetailScreen(albumId: album.id),
+                    ),
+                  );
+                },
+              );
             },
           );
         },
