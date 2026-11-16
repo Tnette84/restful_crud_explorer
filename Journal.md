@@ -22,3 +22,13 @@ I added a method to retrieve an individual album from the REST API. I created an
 ## Phase 3 - Delete Albums
 
 I implemented the HTTP DELETE method and added a delete button with a confirmation dialog. I successfully tested both canceling and deleting an album. The application updates the list and displays a success message. JSONPlaceholder simulates deletion without permanently removing the data from the server.
+
+## Phase 4 - Validation and Reflection
+
+## Phase 4 - Validation and Reflection
+
+While developing and testing my application, I discovered duplicate ListTile code and a missing closing parenthesis and semicolon. My AI tutor suggested removing the duplicate code and correcting the syntax errors. It also suggested using a confirmation dialog before deleting an album and updating the displayed list after a successful deletion.
+
+I chose to implement these suggestions because they improved the functionality of my application, prevented accidental deletions, and resolved coding errors.
+
+After making these changes, I successfully tested the application in Chrome and ran Flutter Analyze with no issues found. This assignment helped me improve my understanding of REST APIs, debugging, and state management in Flutter.
