@@ -10,3 +10,7 @@ I will use a loading indicator while waiting for data and display an error messa
 ### Journal Reflection
 
 The part I am most unsure about is communicating with the API and making sure the application updates correctly after an album is deleted.
+
+## Phase 1 - Fetch and Display Albums
+
+I created an Album model and an API service using the HTTP package. I used FutureBuilder to retrieve and display albums from the JSONPlaceholder REST API. I tested the application in Chrome and successfully displayed the album list.
