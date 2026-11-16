@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'models/album.dart';
 import 'services/api_service.dart';
+import 'screens/album_detail_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -65,11 +66,21 @@ class _AlbumListScreenState
             itemBuilder: (context, index) {
               final album = albumList[index];
 
-              return ListTile(
-                leading: const Icon(Icons.album),
-                title: Text(album.title),
-                subtitle: Text('Album ID: ${album.id}'),
-              );
+             return ListTile(
+  leading: const Icon(Icons.album),
+  title: Text(album.title),
+  subtitle: Text('Album ID: ${album.id}'),
+  trailing: const Icon(Icons.arrow_forward_ios),
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            AlbumDetailScreen(albumId: album.id),
+      ),
+    );
+  },
+             );
             },
           );
         },
